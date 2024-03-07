@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./homepage.module.css";
 import { useContext, useEffect, useState } from "react";
 import { DataShare } from "../../navigationStack/postLoginScreen";
+import axios from "axios";
 
 const HomePage = () => {
   const { taskData, updateTask, deleteTask } = useContext(DataShare);
@@ -17,10 +18,17 @@ const HomePage = () => {
     }));
   };
 
-  const deleteTodo = (index) => {
+  const deleteTodo = (task_id) => {
+    console.log(task_id)
     const userConfirmed = window.confirm("Are you sure to delete?");
     if (userConfirmed) {
-      deleteTask(index);
+      // deleteTask(index);
+      axios.delete(`http://localhost:3010/delete/${task_id}`)
+      .then(res=>{
+        console.log(res)
+        window.location.reload()
+      })
+      .catch(error=>console.log(error))
     }
   };
 
@@ -100,7 +108,7 @@ const HomePage = () => {
                   <img
                     src="https://cdn-icons-png.flaticon.com/128/6861/6861362.png"
                     style={{ width: "38hpx", height: "38px", borderRadius: "50%" }}
-                    onClick={() => deleteTodo(ind)}
+                    onClick={() => deleteTodo(val.task_id)}
                   />
                   
                 </div>
