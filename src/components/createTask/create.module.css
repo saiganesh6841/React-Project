@@ -6,6 +6,7 @@
     position: relative;
     left: 33%;
     margin-top: 120px;
+    border-radius: 10px;
 }
 .head{
     font-family:'Times New Roman', Times, serif;

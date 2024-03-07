@@ -8,6 +8,8 @@ const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [taskStatus, setTaskStatus] = useState({}); // Manage task statuses
 
+
+
   const handleChange = (index, selectedValue) => {
     setTaskStatus((prevStatus) => ({
       ...prevStatus,
@@ -36,7 +38,7 @@ const HomePage = () => {
         <div className={styles.header}>
           <h1 className={styles.heading}>TASK HUB.</h1>
           <Link to="/createtask">
-            <button className={styles.button}>+CREATE TASK</button>
+            <button className={styles.button}>Create Task+</button>
           </Link>
         </div>
         <br />
@@ -52,7 +54,7 @@ const HomePage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div>
+          {/* <div>
             <select className={styles.selection}>
               <option value="default" selected>
                 No status filter
@@ -61,7 +63,7 @@ const HomePage = () => {
               <option value="Progress">Progress</option>
               <option value="Done">Done </option>
             </select>
-          </div>
+          </div> */}
         </div>
         <br />
         <br />
@@ -81,7 +83,9 @@ const HomePage = () => {
                   {val.title}
                 </h1>
                 <p className={styles.description}>{val.description}</p>
+                
                 <div className={styles.sb}>
+                {/* <button className={styles.buttonStyle}>EditTask</button> */}
                   <select
                     className={styles.select}
                     value={taskStatus[ind] ? "Done" : "Progress"}
@@ -90,17 +94,20 @@ const HomePage = () => {
                     {/* <option value="Incomplete">Incomplete</option> */}
                     <option value="Progress">Progress</option>
                     <option value="Done">Done</option>
+                   
                   </select>
+                    
                   <img
                     src="https://cdn-icons-png.flaticon.com/128/6861/6861362.png"
-                    style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                    style={{ width: "38hpx", height: "38px", borderRadius: "50%" }}
                     onClick={() => deleteTodo(ind)}
                   />
+                  
                 </div>
               </div>
             ))
           ) : (
-            <h1>No Task are added</h1>
+            <h1 style={{textAlign:"center",color:"lightcyan"}}>No Task are added</h1>
           )}
         </div>
       </div>

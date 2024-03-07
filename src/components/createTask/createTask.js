@@ -2,14 +2,19 @@
 import { useContext, useState } from "react"
 import style from "./create.module.css"
 import { DataShare } from "../../navigationStack/postLoginScreen"
+import { useLocation, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 const CreateTask=()=>{
-    const {taskData,updateTask}=useContext(DataShare)
+
+    const {updateTask}=useContext(DataShare)
+   
 
     const [newTitle,setNewTitle]=useState("")
     const [newDescription,setNewDescription]=useState("")
+    const navigate=useNavigate()
 
-    const handleSubmit=()=>{
+    const handleSubmit= async()=>{
            
         if(newTitle=="" && newDescription==""){
             alert("enter the title")
@@ -17,17 +22,38 @@ const CreateTask=()=>{
         else if( newDescription==""){
             alert("enter the description")
         }
-        else{
-            var obj={
-                title:newTitle,
-                description:newDescription
-            }
-           
-            updateTask(obj)
-            alert("The task was successfully created ")
-            setNewTitle("")
-            setNewDescription("")
-        }
+        else {
+          
+            await axios.post("http://localhost:3010/storetask",{
+                // user_id:user_id,
+                title: newTitle,
+                description: newDescription,
+               }, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+              .then((response) => {
+                if (response.status === 200) {
+                  updateTask({
+                    title: newTitle,
+                    description: newDescription,
+                  });
+      
+                  alert("The task was successfully created");
+                  setNewTitle("");
+                  setNewDescription("");
+                  // navigate("/home")
+                  navigate("/home");
+                } else {
+                  throw new Error("Failed to store task");
+                }
+              })
+              .catch((error) => {
+                console.error("Error creating task:", error);
+                alert("Failed to create task. Please try again.");
+              });
+          }
         
     }
 

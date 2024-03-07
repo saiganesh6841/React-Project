@@ -1,6 +1,7 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { json, useNavigate } from "react-router-dom"
+import { LoginInformation } from "../../../../navigationStack/navigation"
 
 
 
@@ -8,6 +9,7 @@ const LoginDetails=()=>{
 
   const[username,setUsername]=useState("")
   const[password,setPassword]=useState("")
+  const {loginTrue}=useContext(LoginInformation)
   const navigate=useNavigate()
 
   const usernameHandler=(event)=>{
@@ -31,22 +33,26 @@ const LoginDetails=()=>{
   
   const userDetails = (userInfo) => {
     axios.post("http://localhost:3030/login", userInfo, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then((res) => {
-        if(res.data=="The user is successful login"){
-          alert(res.data)
-          navigate("/home")
-        }else{
-          alert(res.data)
+        headers: {
+            'Content-Type': 'application/json',
         }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    })
+        .then((res) => {
+            if (res.data === "Invalid credentials") {
+                console.log(res.data);
+                alert(res.data);
+                
+            } else {
+                console.log(res.data);
+                alert(res.data);
+                loginTrue();
+                navigate("/home");
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
   
   // const userDetails = (userInfo) => {
   //   axios.get("http://localhost:3030/login", {

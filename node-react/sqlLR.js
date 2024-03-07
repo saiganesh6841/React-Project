@@ -4,7 +4,10 @@ const express=require("express")
 const fs=require("fs")
 const api=express()
 const cors = require('cors');
+const bodyParser = require('body-parser');
 api.use(cors());
+api.use(bodyParser.urlencoded({ extended: true }));
+api.use(bodyParser.json());
 
 // const [username,password,email]=
 api.use(express.json())
@@ -63,39 +66,26 @@ api.post("/register",(req,res)=>{
 
 
 //Login
-api.post("/login", (req, res) => {
-    const { username, password } = req.body;
-
-    connection.query("select * from users where username=? AND password=?",[username,password],(error,data)=>{
-      if(error){
-        res.status(500).send("internal server error")
-      }
-      if(data.length>0){
-        res.send("The user is successful login")
-      }
-      else{
-        res.send("Invalid credentials")
-      }
-    })
-
-    // fs.readFile("./index.json", (err, data) => {
-    //   if (err) {
-    //     console.error(err);
-    //     res.status(500).send("Internal Server Error");
-    //     return;
-    //   }
-    //   const users = JSON.parse(data);
-    //   const foundUser = users.find(user => user.username === username && user.password === password);
+api.get("/login", (req, res) => {
   
-    //   if (foundUser) {
-    //     res.send("The user is successfully logged in");
-    //   } else {
-    //     res.send("Invalid login credentials");
-    //   }
-    // });
+  const { username, password } = req.body;
+  console.log("Username:", username);
+  console.log("Password:", password);
 
-
+  connection.query("select * from users where username=? AND password=?", [username, password], (error, data) => {
+      if (error) {
+          res.status(500).send("Internal Server error");
+      } else {
+          if (data.length > 0) {
+              console.log(data);
+              res.send("The user is successfully logged in");
+          } else {
+              console.log(data);
+              res.send("Invalid credentials");
+          }
+      }
   });
+});
   
 
 api.listen(3030,()=>console.log("the port is running succesful"))

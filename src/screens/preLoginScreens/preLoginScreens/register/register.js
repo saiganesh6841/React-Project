@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { LoginInformation } from "../../../../navigationStack/navigation";
 
 
 
@@ -16,6 +17,7 @@ const CreateAccount=()=>{
       const emailInput=/@gmail\.com$/
   const [emailError,changeEmailError]=useState("")
   const navigate=useNavigate()
+    const {loginTrue}=useContext(LoginInformation)
 
    //password
    const[password,changePassword]=useState("")
@@ -71,6 +73,11 @@ const CreateAccount=()=>{
       changeError("pass is doesnot match")
       // alert("password has to match")
     }
+  }
+
+  const skip=()=>{
+    loginTrue()
+    navigate("/home")
   }
 
   
@@ -186,7 +193,10 @@ const CreateAccount=()=>{
                 <p className="text-center text-muted mt-5 mb-0">Have already an account? 
                 <Link to="/login"><a href="#!"className="fw-bold text-body"><u>Login here</u></a></Link>
                 </p>
-
+                <Link to="/home" onClick={skip}>
+                <a href="#!"className="fw-bold text-body"><u>Skip Register & Login</u></a>
+                </Link>
+             {/* <a style={{color:"black",marginLeft:"170px"}}>Skip Register & Login</a> */}
               </form>
 
             </div>
