@@ -1,7 +1,7 @@
 import axios from "axios"
-import { useContext, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import { json, useNavigate } from "react-router-dom"
-import { LoginInformation } from "../../../../navigationStack/navigation"
+import { LoginInformation, userIn } from "../../../../navigationStack/navigation"
 
 
 
@@ -12,7 +12,10 @@ const LoginDetails=()=>{
   const {loginTrue}=useContext(LoginInformation)
   const navigate=useNavigate()
 
+  // const {setUser}=userIn()
+
   const usernameHandler=(event)=>{
+  
     setUsername(event.target.value)
   }
 
@@ -22,6 +25,10 @@ const LoginDetails=()=>{
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!username || !password) {
+      alert("Username and password are required");
+      return; 
+    }
   
     const userInfo = {
       username,
@@ -38,13 +45,21 @@ const LoginDetails=()=>{
         }
     })
         .then((res) => {
-            if (res.data === "Invalid credentials") {
-                console.log(res.data);
-                alert(res.data);
-                
-            } else {
-                console.log(res.data);
-                alert(res.data);
+          console.log(res)
+          if (res.data === "Invalid credentials") {
+            console.log(res.data);
+            alert(res.data);
+        } else {
+            console.log(res.data.message);
+            alert(res.data.message);
+            
+            const user_id = res.data.user_id;
+
+            sessionStorage.setItem("user_id",user_id)
+            // setUser(user_id)
+            // navigate(`/createtask/${user_id}`);
+            
+            console.log(user_id)
                 loginTrue();
                 navigate("/home");
             }
@@ -53,22 +68,7 @@ const LoginDetails=()=>{
             console.error(error);
         });
 };
-  
-  // const userDetails = (userInfo) => {
-  //   axios.get("http://localhost:3030/login", {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     mode: 'no-cors',
-  //     body:JSON.stringify(userInfo)
-  //   })
-  //    .then((res)=>{
-  //     console.log(res)
-      
-      
-  //    })
-     
-  // };
+
     return(
         <>
         <section className="vh-100" style={{ backgroundColor: '#508bfc' }}>

@@ -11,9 +11,11 @@ const PostLoginScreens = () => {
   const [taskData, setTaskData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  let userId=sessionStorage.getItem("user_id")
+
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3010/gettasks");
+      const response = await fetch(`http://localhost:3010/gettasks/${userId}`);
       if (response.ok) {
         const data = await response.json();
         setTaskData(data);
